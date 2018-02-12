@@ -14,3 +14,5 @@ Steps identified:
 6. Predict on incoming set of new data.
 
 The code also explain example to send data from html to Flask server to predict on new data points. 
+
+The Model is generate and deploy on aws lambda using zappa 
