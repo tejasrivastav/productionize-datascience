@@ -1,0 +1,11 @@
+{
+    "dev": {
+        "app_function": "app.server.app",
+        "aws_region": "ap-southeast-1",
+        "profile_name": "teja",
+        "project_name": "python-zappa",
+        "runtime": "python3.6",
+        "s3_bucket": "zappa-a1rm8pnil",
+        "slim_handler": true
+    }
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Iris data prediction example on production">
+  <meta name="author" content="tejasrivastasa tejasrivastav@gmail.com">
+  
+  <title>Productionize Data Science | Jupyter NoteBooks</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+
+      #output > img {
+        max-height: 320px;
+      }
+  </style>
+</head>
+
+<body>
+  <div class="container" style="background-color: #f2f2f2; width: 100%; height: 100%;">
+        <div class="row" style="height: 100%; align-items: center;">
+            <div class="col">
+                <form>
+                    <div class="form-group">
+                        <label for="sepalLength">Sepal Length</label>
+                        <input type="number" class="form-control" id="sepalLength" name="sepalLength" placeholder="Enter sepal length">
+                    </div>
+                    <div class="form-group">
+                        <label for="sepalWidth">Sepal Width</label>
+                        <input type="number" class="form-control" id="sepalWidth" name="sepalWidth" placeholder="Enter sepal length">
+                    </div>
+                    <div class="form-group">
+                        <label for="petalLength">Petal Length</label>
+                        <input type="number" class="form-control" id="petalLength" name="petalLength" placeholder="Enter sepal length">
+                    </div>
+                    <div class="form-group">
+                        <label for="petalWidth">Petal Width</label>
+                        <input type="number" class="form-control" id="petalWidth" name="petalWidth" placeholder="Enter sepal length">
+                    </div>
+                    <button type="submit" id="predict" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col">
+                <div id="output"></div>
+            </div>
+        </div>
+  </div> <!-- /container -->
+  <script>
+    $(document).ready(function(){
+        $("#predict").click(
+        function predict(event) {
+            var selectors = ["sepalLength","sepalWidth","petalLength","petalWidth"];
+            var values = selectors.map((sel)=>document.getElementById(sel).value);
+            console.log(values);
+            var urlPrefix;
+            if(window.location.port) {
+                urlPrefix = window.location.protocol + '//' + window.location.hostname + ":" + window.location.port + window.location.pathname
+            } else {
+                urlPrefix = window.location.protocol + '//' + window.location.hostname + window.location.pathname + "/"
+            }
+            $.ajax({
+                url: urlPrefix+"handle_data",
+                type: "POST",
+                data: {
+                    data: values
+                },
+                success: function(response) {
+                    var output = $("#output");
+                    output.html(null);
+                    output.append("<div>"+response+"</div>");
+                    switch(response) {
+                        case "Iris-setosa": output.append("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/800px-Kosaciec_szczecinkowaty_Iris_setosa.jpg' />");
+                            break;
+                        case "Iris-virginica": output.append("<img src='https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/295px-Iris_virginica.jpg' />");
+                            break;
+                        case "Iris-versicolor": output.append("<img src='https://upload.wikimedia.org/wikipedia/commons/2/27/Blue_Flag%2C_Ottawa.jpg' />");
+                            break;
+                    }
+                    console.log(response);
+
+                },
+                error: function(response) {
+                    console.log("===== ERROR =====");
+                    console.log(response);
+                }
+            });
+            event.preventDefault();
+        });
+    });
+  </script>
+</body>
+</html>
