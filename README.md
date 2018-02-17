@@ -16,3 +16,5 @@ Steps identified:
 The code also explain example to send data from html to Flask server to predict on new data points. 
 
 The Model is generate and deploy on aws lambda using zappa 
+
+To read more about: https://www.linkedin.com/pulse/pushing-jupyter-notebooks-production-teja-srivastasa/
